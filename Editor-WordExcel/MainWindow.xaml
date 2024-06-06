@@ -1,0 +1,41 @@
+﻿<Window x:Class="Editor_WordExcel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Editor_WordExcel"
+        mc:Ignorable="d"
+        MinHeight="450" MinWidth="400"
+        Title="Welcome ^_^" Height="450" Width="400">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFF6F4FF"/>
+                <GradientStop Color="#FFE8E4FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Добро пожаловать в редактор документов!" VerticalAlignment="Top" Grid.Row="0" Grid.ColumnSpan="2" FontFamily="Gabriola" FontSize="26" TextAlignment="Center" Foreground="#FF010E7F" FontWeight="Bold" />
+
+
+        <TextBlock Text="Работа с Word" VerticalAlignment="Top" Grid.Row="1" Grid.ColumnSpan="2" FontFamily="Gabriola" FontSize="22" TextAlignment="Center" Foreground="#FF010E7F" />
+        <Button Content="Создать" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" FontFamily="Gabriola" FontSize="22" Foreground=" White" Click="CreateWord"/>
+        <Button Content="Открыть" VerticalAlignment="Center" Grid.Row="1" Background="#FF2A91BD" Foreground="White" FontFamily="Gabriola" FontSize="22" BorderBrush="#FF040088" Click="OpenWord" />
+
+        <TextBlock Text="Работа с Excel" VerticalAlignment="Top" Grid.Row="3" Grid.ColumnSpan="2" FontFamily="Gabriola" FontSize="22" TextAlignment="Center" Foreground="#FF010E7F" />
+        <Button Content="Создать" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" FontFamily="Gabriola" FontSize="22" Foreground="White"  Click="CreateExcel"/>
+        <Button Content="Открыть" VerticalAlignment="Center" Grid.Row="3" Background="#FF2A91BD" Foreground="White" FontFamily="Gabriola" FontSize="22" BorderBrush="#FF040088" Click="OpenExcel"/>
+
+    </Grid>
+</Window>
