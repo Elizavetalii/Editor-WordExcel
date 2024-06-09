@@ -9,6 +9,12 @@ namespace Editor_WordExcel
 {
     public partial class SendExcel : Window
     {
+        private string attachmentPath;
+
+        public void SetAttachmentPath(string path)
+        {
+            attachmentPath = path;
+        }
         public SendExcel()
         {
             InitializeComponent();
@@ -34,47 +40,44 @@ namespace Editor_WordExcel
                 return;
             }
 
-            Workbook wb = new Workbook();
-            Worksheet sheet = wb.Worksheets[0];
-            CellRange localRange = sheet.AllocatedRange;
-            var createExcelWindow = new CreateExcel();
-            var dataTable = sheet.ExportDataTable(localRange, true);
-            createExcelWindow.grid.ItemsSource = dataTable.DefaultView;
-            createExcelWindow.ShowDialog();
-            string excelFilePath = createExcelWindow.SelectedFilePath;
-            if (!string.IsNullOrEmpty(excelFilePath))
+            //Workbook wb = new Workbook();
+            //Worksheet sheet = wb.Worksheets[0];
+            //CellRange localRange = sheet.AllocatedRange;
+            //var createExcelWindow = new CreateExcel();
+            //var dataTable = sheet.ExportDataTable(localRange, true);
+            //createExcelWindow.grid.ItemsSource = dataTable.DefaultView;
+            //createExcelWindow.ShowDialog();
+            //string excelFilePath = createExcelWindow.SelectedFilePath;
+            if (!string.IsNullOrEmpty(attachmentPath))
             {
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress(Login.Text);
                 message.To.Add(ToWhom.Text);
                 message.Subject = Subject.Text;
-                message.Attachments.Add(new Attachment(excelFilePath));
+                message.Attachments.Add(new Attachment(attachmentPath));
                 EmailProvider emailProvider = GetEmailProvider(Login.Text);
                 string smtpServer;
-                bool enableSsl;
+                bool enableSsl = true;
+                int port = 587;
                 switch (emailProvider)
                 {
                     case EmailProvider.Gmail:
                         smtpServer = "smtp.gmail.com";
-                        enableSsl = true;
                         break;
                     case EmailProvider.Mail:
                         smtpServer = "smtp.mail.ru";
-                        enableSsl = true;
                         break;
                     case EmailProvider.Rambler:
                         smtpServer = "smtp.rambler.ru";
-                        enableSsl = false;
                         break;
                     case EmailProvider.Yandex:
                         smtpServer = "smtp.yandex.ru";
-                        enableSsl = true;
                         break;
                     default:
                         MessageBox.Show("Неизвестный провайдер электронной почты. Невозможно отправить письмо.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                 }
-                SmtpClient smtpClient = new SmtpClient(smtpServer);
+                SmtpClient smtpClient = new SmtpClient(smtpServer, port);
                 smtpClient.EnableSsl = enableSsl;
                 smtpClient.Credentials = new NetworkCredential(Login.Text, Password.Text);
                 try

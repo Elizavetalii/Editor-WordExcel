@@ -8,6 +8,7 @@ namespace Editor_WordExcel.Excel
 {
     public partial class CreateExcel : Window
     {
+        private string saveFilePath = "";
         public string SelectedFilePath { get; set; }
         public CreateExcel()
         {
@@ -22,7 +23,7 @@ namespace Editor_WordExcel.Excel
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                string filePath = saveFileDialog.FileName;
+                saveFilePath = saveFileDialog.FileName;
                 var dataTable = grid.ItemsSource as DataView;
                 Workbook wb = new Workbook();
                 wb.Worksheets.Clear();
@@ -30,7 +31,7 @@ namespace Editor_WordExcel.Excel
                 Worksheet sheet = wb.Worksheets.Add("Лист 1");
                 sheet.InsertDataView(dataTable, true, 1, 1);
 
-                wb.SaveToFile(filePath, FileFormat.Version2016);
+                wb.SaveToFile(saveFilePath, FileFormat.Version2016);
             }
         }
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -69,8 +70,17 @@ namespace Editor_WordExcel.Excel
         }
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            SendOnline send = new SendOnline();
-            send.Show();
+            if (string.IsNullOrEmpty(saveFilePath))
+            {
+                MessageBox.Show("Пожалуйста, сохраните файл перед отправкой.", "Файл не сохранен", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                SendExcel send = new SendExcel();
+                send.SetAttachmentPath(saveFilePath);
+                send.Show();
+            }
+       
         }
     }
 }

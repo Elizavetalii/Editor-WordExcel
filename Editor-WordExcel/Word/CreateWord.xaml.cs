@@ -7,6 +7,7 @@ namespace Editor_WordExcel.Word
 {
     public partial class CreateWord : Window
     {
+        private string saveFilePath = "";
         public CreateWord()
         {
             InitializeComponent();
@@ -28,15 +29,23 @@ namespace Editor_WordExcel.Word
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                string filePath = saveFileDialog.FileName;
-                SaveRtfFile(filePath);
+                saveFilePath = saveFileDialog.FileName;
+                SaveRtfFile(saveFilePath);
             }
         }
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            SendOnline send = new SendOnline();
-            send.Show();
+            if (string.IsNullOrEmpty(saveFilePath))
+            {
+                MessageBox.Show("Пожалуйста, сохраните файл перед отправкой.", "Файл не сохранен", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                SendOnline send = new SendOnline();
+                send.SetAttachmentPath(saveFilePath);
+                send.Show();
+            }
         }
     }
 }

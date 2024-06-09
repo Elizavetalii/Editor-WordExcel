@@ -8,6 +8,13 @@ namespace Editor_WordExcel
 {
     public partial class SendOnline : Window
     {
+        private string attachmentPath;
+
+        public void SetAttachmentPath(string path)
+        {
+            attachmentPath = path;
+        }
+
         public SendOnline()
         {
             InitializeComponent();
@@ -36,12 +43,16 @@ namespace Editor_WordExcel
             var createWordWindow = new CreateWord();
             TextRange range = new TextRange(createWordWindow.rtb.Document.ContentStart, createWordWindow.rtb.Document.ContentEnd);
 
+            //string tempFilePath = Path.GetTempFileName();
+            //File.WriteAllText(tempFilePath, range.Text);
+
             MailMessage message = new MailMessage(Login.Text, ToWhom.Text, Subject.Text, range.Text);
+            message.Attachments.Add(new Attachment(attachmentPath));
             message.IsBodyHtml = true;
 
             string smtpServer;
             bool enableSsl = true;
-            int port = 465;
+            int port = 587;
 
             switch (GetEmailProvider(Login.Text))
             {
@@ -64,10 +75,7 @@ namespace Editor_WordExcel
 
             SmtpClient smtpClient = new SmtpClient(smtpServer, port);
             smtpClient.EnableSsl = enableSsl;
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new NetworkCredential(Login.Text, Password.Text);
-            //smtpClient.Timeout = 100;
 
             try
             {
